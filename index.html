@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>I Love You So Much ❤️</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background:#000;
+      color:white;
+      overflow:hidden;
+      height:100vh;
+    }
+    .container { position:relative; width:100%; height:100vh; }
+
+    .photo {
+      position:absolute; 
+      border-radius:14px; 
+      box-shadow:0 0 40px rgba(255,20,147,0.9);
+      border:4px solid rgba(255,255,255,0.35); 
+      object-fit:cover;
+      max-width: 48vw;
+      max-height: 38vh;
+      opacity: 0.98;
+    }
+
+    .text {
+      position:absolute; 
+      font-size:1.6rem; 
+      font-weight:700;
+      color: #ffe4f0;
+      text-shadow: 
+        0 0 12px #ff1493,
+        0 0 25px #ff1493,
+        0 0 40px #ff69b4,
+        0 0 55px #ff1493,
+        0 0 70px #ff1493;
+      white-space:nowrap; 
+      pointer-events:none;
+      -webkit-text-stroke: 1px rgba(255, 20, 147, 0.7);
+    }
+
+    .heart { 
+      position:absolute; 
+      font-size:2.5rem; 
+      color:#ff3366; 
+      text-shadow: 0 0 25px #ff1493;
+      pointer-events:none; 
+    }
+
+    .play-btn, .music-btn {
+      position:fixed; 
+      background:rgba(255,255,255,0.98); 
+      color:#000;
+      border-radius:50%; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center;
+      box-shadow:0 0 50px rgba(255,20,147,0.95); 
+      z-index:100; 
+      cursor:pointer;
+    }
+    .play-btn { top:50%; left:50%; transform:translate(-50%,-50%); width:80px; height:80px; font-size:2.2rem; }
+    .music-btn { bottom:85px; right:20px; width:60px; height:60px; font-size:1.7rem; }
+
+    .bottom-bar {
+      position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+      background:rgba(255,255,255,0.18); backdrop-filter:blur(15px);
+      padding:12px 25px; border-radius:50px; z-index:200; font-size:1.1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="container"></div>
+
+  <div class="play-btn" id="playBtn">▶</div>
+  <div class="music-btn" id="musicBtn">🎵</div>
+  <div class="bottom-bar">❤️ Pour toi ma chérie</div>
+
+  <audio id="bgMusic" loop>
+    <source src="./musique.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const container = document.getElementById('container');
+    const music = document.getElementById('bgMusic');
+    let musicPlaying = false;
+
+    const texts = ["I love you so much ❤️", "Je t'aime tellement ❤️", "Tu es tout pour moi ❤️"];
+    const photos = ["./photo1.jpg","./photo2.jpg","./photo3.jpg","./photo4.jpg"];
+
+    function createPhoto() {
+      const photo = document.createElement('img');
+      photo.src = photos[Math.floor(Math.random()*photos.length)];
+      photo.classList.add('photo');
+      
+      const size = Math.random() * 138 + 130;
+      photo.style.width = `${size}px`;
+      photo.style.height = 'auto';
+
+      photo.style.left = `${Math.random() * 68 + 16}%`;
+      photo.style.top = `${Math.random() * 55 + 28}%`;
+      
+      container.appendChild(photo);
+
+      // Vitesse diminuée de ~10% (durée plus longue)
+      gsap.fromTo(photo, 
+        { scale: 0.35, opacity: 0.4, rotation: Math.random()*20 - 10 },
+        { 
+          scale: 1, 
+          opacity: 1, 
+          y: -1200,
+          x: Math.random() * 70 - 35,
+          rotation: Math.random() * 15 - 8,
+          duration: Math.random() * 22 + 24,   // Plus lent
+          repeat: -1,
+          delay: Math.random() * -23,
+          ease: "power1.inOut"
+        }
+      );
+    }
+
+    function createText() {
+      const text = document.createElement('div');
+      text.classList.add('text');
+      text.textContent = texts[Math.floor(Math.random()*texts.length)];
+      text.style.left = `${Math.random()*65 + 18}%`;
+      text.style.top = `${Math.random()*60 + 25}%`;
+      container.appendChild(text);
+
+      gsap.fromTo(text, 
+        { scale: 0.5, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          y: -1120,
+          x: Math.random() * 50 - 25,
+          duration: Math.random() * 18 + 17,
+          repeat: -1,
+          delay: Math.random() * -18,
+          ease: "power1.inOut"
+        }
+      );
+    }
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.innerHTML = '❤️';
+      heart.style.left = `${Math.random()*100}%`;
+      heart.style.top = '100%';
+      container.appendChild(heart);
+
+      gsap.to(heart, {
+        y: -1500,
+        x: Math.random() * 220 - 110,
+        scale: Math.random() * 0.7 + 1,
+        opacity: 0,
+        duration: Math.random() * 11 + 10,
+        repeat: -1,
+        delay: Math.random() * -13,
+        ease: "none"
+      });
+    }
+
+    // Lancement
+    for (let i = 0; i < 10; i++) createPhoto();
+    for (let i = 0; i < 13; i++) createText();
+    for (let i = 0; i < 26; i++) createHeart();
+
+    document.getElementById('playBtn').addEventListener('click', () => alert("❤️ Je t'aime ma chérie !"));
+
+    document.getElementById('musicBtn').addEventListener('click', () => {
+      if (musicPlaying) {
+        music.pause();
+        document.getElementById('musicBtn').textContent = "🎵";
+      } else {
+        music.play().catch(()=>{});
+        document.getElementById('musicBtn').textContent = "⏸️";
+      }
+      musicPlaying = !musicPlaying;
+    });
+
+    gsap.to("#playBtn", {scale:1.15, duration:1.6, repeat:-1, yoyo:true});
+  </script>
+</body>
+</html>
